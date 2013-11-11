@@ -1,0 +1,25 @@
+{   
+	"manifest_version": 2, 
+	"name": "TPB IMDB Pirate Bay Search Plugin",
+	"version": "0.0.1",
+	"description": "Search The Pirate Bay from IMDB.",
+	"permissions": [
+		"tabs",
+		"http://*.thepiratebay.se/",
+		"http://thepiratebay.se/",
+		"https://*/*",
+		"http://*/*"
+	],   
+	"icons": {
+		"16": "images/icon.png",
+		"48": "images/icon.png",
+		"128": "images/icon.png"
+	},
+  	"content_scripts": [
+    {
+ 	  "matches": ["http://www.imdb.com/*", "https://www.imdb.com/*"],
+      "css": ["bootstrap/css/bootstrap.css"], 
+      "js": ["jquery-1.9.1.min.js", "tpbImdbPirateBaySearch.plugin.js", "contentscript_imdb.js"]
+    }
+  ]
+} 
