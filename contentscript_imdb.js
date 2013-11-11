@@ -33,7 +33,7 @@
 					container.css('left', '-10px').children().remove();
 
 					var header = $('h1.header').clone(); 
-					header.find('span').remove()
+					header.find('span:not(:first)').remove();
 
 					container.tpbSearch({'searchTerm' : header.text() });
 				}
