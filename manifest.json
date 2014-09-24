@@ -1,14 +1,12 @@
 {   
 	"manifest_version": 2, 
 	"name": "TPB IMDB Pirate Bay Search Plugin",
-	"version": "0.0.2",
+	"version": "0.0.4",
 	"description": "Search The Pirate Bay from IMDB.",
 	"permissions": [
 		"tabs",
 		"http://*.thepiratebay.se/",
-		"http://thepiratebay.se/",
-		"https://*/*",
-		"http://*/*"
+		"http://thepiratebay.se/"
 	],   
 	"icons": {
 		"16": "images/icon.png",

@@ -28,7 +28,7 @@
 
 			// Handle no results from TPB
 			if(resultTds.length === 0)  {
-				container.append(logo).attr('title', 'Sorry, no results on TPB for this one...') 
+				container.append(logo).attr('title', 'Sorry, no results on TPB for this one...')
 									  .fadeIn('slow');
 				return;
 			}
