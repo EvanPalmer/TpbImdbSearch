@@ -1,6 +1,5 @@
 
 (function($) {
-
 	$.fn.extend({
 		tpbSearch : function(options){
 			var defaults = { searchTerm: ''};
@@ -9,41 +8,43 @@
 				doSearch($(this), options.searchTerm);
 			})
 		}
-
 	});
 
 	// private functions
 	function doSearch(container, searchTerm){
-		// here we should iterate over the container selector, becuase it's possible multiple items will be selected.
-		//debugger;
-		container.children().remove();
+		// here we should iterate over the container selector, because it's possible multiple items will be selected.
 		var sanitizedSearchTerm = sanitizeSearchTerm(searchTerm);
 
 		// set the default logo
-		var logo = $('<img id="tpb-logo" src="//thepiratebay.se/static/downloads/preview-cassette.gif">').css('width', '50px').css('height', '50px');
+        var loadingImageUrl = chrome.extension.getURL('images/ajax-loader.gif');
+        var logo = $('<img id="tpb-logo">')
+                    .attr('src', loadingImageUrl)
+                    .css('width', '25px')
+                    .css('height', '25px');
+        container.children().remove();
+        container.append(logo);
 
-		var searchUrl = '//thepiratebay.se/search/' + encodeURIComponent(sanitizedSearchTerm) + '/0/7/0'
+		var searchUrl = '//thepiratebay.se/search/' + encodeURIComponent(sanitizedSearchTerm) + '/0/7/0';
 		$.get(searchUrl, function(data){
 			var resultTds = $(data).find('a[title="Download this torrent using magnet"]:lt(5)').closest('td');
 
-			// Handle no results from TPB
-			if(resultTds.length === 0)  {
-				container.append(logo).attr('title', 'Sorry, no results on TPB for this one...')
-									  .fadeIn('slow');
-				return;
-			}
-
 			// Sweet! We have some results!
-			logo.attr('src', '//thepiratebay.se/static/downloads/preview-tpb-logo.gif');
+            var resultsImageUrl = chrome.extension.getURL('images/logo.gif');
+			logo.attr('src', resultsImageUrl)
+                .css('width', '98px')
+                .css('height', '102px');
+            $('div.infobar').css('margin', '4px 0 55px');
+            container.children().remove();
 			buildDropdownList(container, resultTds, sanitizedSearchTerm, logo);
-
 			container.fadeIn('slow');
 		});
 	}
 
 	function sanitizeSearchTerm(searchTerm){
-		return searchTerm.replace(/(\d+ tv series)/ig, '') // get rid of the word TV Series, because most torrents don't have that string in there
+		return searchTerm.replace(/(\d+ tv series)/ig, '') // get rid of the phrase TV Series, because most torrents don't have that string in there
 					 .replace(/(\d+ documentary)/ig, '') // get rid of the word Documentary, because most torrents don't have that string in there
+					 .replace(/(\d+ tv movie)/ig, '') // get rid of the phrase Tv Movie, because most torrents don't have that string in there
+                     .replace(/\([IV]+\)/g, ' ') // get rid of the roman numerals. This happens when IMDB knows of several movies with the same name in the same year.
 					 .replace(/[^\s\w\d]+/ig, '') // get rid of weird-ass characters
 					 .replace(/\s+/g, ' ') // get rid of excessive spaces
 					 .trim(); // keep that shit trim, motherfucker
@@ -58,7 +59,7 @@
 					.append($('<li>').append('<a target="_blank" href="//thepiratebay.se/search/' + encodeURIComponent(searchTerm) + '/0/7/0">Search TPB for "' + searchTerm + '"</a>'))
 					.append($('<li class="divider">')))));
 
-		// add all the links for the top 5 magent links
+		// add all the links for the top 5 magnet links
 		items.each(function(i, e) { 
 			var description = $(e).find('font.detDesc').text();
 			var sizeExtractionRegex = /.+Size (.+?),.+/i;
@@ -69,6 +70,13 @@
 			
 			container.find('.dropdown-menu').append($('<li>').append($('<a>').attr('href', magnetUrl).append(contextMenuTitle)));
 		});
+
+        // Damn gurl. No results :( Let's let the user know
+        if(items.length === 0)  {
+            var notFoundImageUrl = chrome.extension.getURL('images/logo-not-found.gif');
+            container.find('.dropdown-menu').append($('<li>').append('<a target="_blank" href="//thepiratebay.se/search/' + encodeURIComponent(searchTerm) + '/0/7/0">Sorry! No results found.</a>'));
+            container.find('#tpb-logo').attr('src', notFoundImageUrl);
+        }
 	}
 
 }(jQuery));

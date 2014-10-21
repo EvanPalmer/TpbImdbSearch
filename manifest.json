@@ -13,6 +13,11 @@
 		"48": "images/icon.png",
 		"128": "images/icon.png"
 	},
+    "web_accessible_resources": [
+        "images/ajax-loader.gif",
+        "images/logo.gif",
+        "images/logo-not-found.gif"
+    ],
   	"content_scripts": [
     {
  	  "matches": ["http://www.imdb.com/*", "https://www.imdb.com/*"],
