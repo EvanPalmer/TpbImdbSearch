@@ -11,6 +11,13 @@
 	});
 
 	// private functions
+
+	function buildSearchUrl(searchTerm)
+	{
+		var searchUrl = '//thepiratebay.cr/search/' + encodeURIComponent(searchTerm) + '/0/7/0';
+		return searchUrl;
+	}
+
 	function doSearch(container, searchTerm){
 		// here we should iterate over the container selector, because it's possible multiple items will be selected.
 		var sanitizedSearchTerm = sanitizeSearchTerm(searchTerm);
@@ -24,7 +31,7 @@
         container.children().remove();
         container.append(logo);
 
-		var searchUrl = '//thepiratebay.se/search/' + encodeURIComponent(sanitizedSearchTerm) + '/0/7/0';
+        var searchUrl = buildSearchUrl(sanitizedSearchTerm);
 		$.get(searchUrl, function(data){
 			var resultTds = $(data).find('a[title="Download this torrent using magnet"]:lt(5)').closest('td');
 
@@ -56,7 +63,7 @@
 			.append($('<li class="dropdown xx">')				
 				.append($('<a class="dropdown-toggle" data-toggle="dropdown" href="#">').append(logo))
 				.append($('<ul class="dropdown-menu">')
-					.append($('<li>').append('<a target="_blank" href="//thepiratebay.se/search/' + encodeURIComponent(searchTerm) + '/0/7/0">Search TPB for "' + searchTerm + '"</a>'))
+					.append($('<li>').append('<a target="_blank" href="' + buildSearchUrl(searchTerm) + '">Search TPB for "' + searchTerm + '"</a>'))
 					.append($('<li class="divider">')))));
 
 		// add all the links for the top 5 magnet links
@@ -74,7 +81,7 @@
         // Damn gurl. No results :( Let's let the user know
         if(items.length === 0)  {
             var notFoundImageUrl = chrome.extension.getURL('images/logo-not-found.gif');
-            container.find('.dropdown-menu').append($('<li>').append('<a target="_blank" href="//thepiratebay.se/search/' + encodeURIComponent(searchTerm) + '/0/7/0">Sorry! No results found.</a>'));
+            container.find('.dropdown-menu').append($('<li>').append('<a target="_blank" href="' + buildSearchUrl(searchTerm) + '">Sorry! No results found.</a>'));
             container.find('#tpb-logo').attr('src', notFoundImageUrl);
         }
 	}
