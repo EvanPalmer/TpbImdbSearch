@@ -7,9 +7,9 @@
 	<key>Builder Version</key>
 	<string>10600.2.5</string>
 	<key>CFBundleDisplayName</key>
-	<string>Searchless IMDB</string>
+	<string>TpbImdbSearch</string>
 	<key>CFBundleIdentifier</key>
-	<string>co.lesyk.searchless</string>
+	<string>co.lesyk.TpbImdbSearch</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -78,7 +78,5 @@
 			<string>All</string>
 		</dict>
 	</dict>
-	<key>Update Manifest URL</key>
-	<string>https://github.com/lesyk/Searchless-IMDB/blob/master/safari/searchless-imdb.plist</string>
 </dict>
 </plist>

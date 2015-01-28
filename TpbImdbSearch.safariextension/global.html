@@ -42,13 +42,10 @@
         var seeders = $(e).find('td[align="right"]').first().text();
         var leechers = $(e).find('td[align="right"]').last().text();
         var contextMenuTitle = linkName + '<br /> Size <b>' + size + '</b> Seeders: <b>' + seeders + '</b>' + '</b> Leechers: <b>' + leechers + '</b>';
-        // var magnetUrl = $(e).find('a[title="Download this torrent using magnet"]').attr('href');
-
-        // container.find('.dropdown-menu').append($('<li>').append($('<a>').attr('href', magnetUrl).append(contextMenuTitle)));
+        var magnetUrl = $(e).find('a[title="Download this torrent using magnet"]').attr('href');
         
-        var link = $(e).find('a[title="Download this torrent"]').attr('href');
+        container.find('.dropdown-menu').append($('<li>').append($('<a>').attr('href', magnetUrl).append(contextMenuTitle)));
         
-        container.find('.dropdown-menu').append($('<li>').append($('<a>').attr('href', link).append(contextMenuTitle)));
       });
       
       container.append('<a target="_blank" class="clickable" href="' + buildSearchUrl(sanitizeSearchTerm(searchTerm[0])) + '">search for more on TPB...</a>')
