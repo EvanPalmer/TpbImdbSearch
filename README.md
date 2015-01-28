@@ -1,4 +1,4 @@
-# Searchless
+# TpbImdbSearch
 
 Description:
 Plugin saves time for finding movie files. Open wanted movie on IMDB and we will do all search work for you.
