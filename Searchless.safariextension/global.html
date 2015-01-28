@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="jquery-1.9.1.min.js"></script>
+  <script>  
+  const popover = safari.extension.popovers[0].contentWindow;
+  const toolbarItem = safari.extension.toolbarItems[0];
+  toolbarItem.badge = 0;
+  
+  function sanitizeSearchTerm(searchTerm){
+    return searchTerm.replace(/(\d+ tv series)/ig, '') // get rid of the phrase TV Series, because most torrents don't have that string in there
+           .replace(/(\d+ documentary)/ig, '') // get rid of the word Documentary, because most torrents don't have that string in there
+           .replace(/(\d+ tv movie)/ig, '') // get rid of the phrase Tv Movie, because most torrents don't have that string in there
+                     .replace(/\([IV]+\)/g, ' ') // get rid of the roman numerals. This happens when IMDB knows of several movies with the same name in the same year.
+           .replace(/[^\s\w\d]+/ig, '') // get rid of weird-ass characters
+           .replace(/\s+/g, ' ') // get rid of excessive spaces
+           .trim(); // keep that shit trim, motherfucker
+  }
+  
+  function buildSearchUrl(searchTerm){
+    var searchUrl = 'http://thepiratebay.cr/search/' + encodeURIComponent(searchTerm) + '/0/7/0';
+    return searchUrl;
+  }
+  
+  function buildDropdownList(items, searchTerm){
+    var container = $("<div class='results' id='extSeARCHresults_"+searchTerm[1]+"'></div>")
+
+    //Check if there are any results
+    if(items.length === 0){
+      container.append('<h3 class="results">Sorry! No results found for: '+searchTerm[0]+'</h3>')
+               .append('<a target="_blank" class="clickable" href="' + buildSearchUrl(sanitizeSearchTerm(searchTerm[0])) + '">search more on TPB...</a>');
+    }else{
+      container.append('<h3>Search results for: ' + searchTerm[0] + '</h3>')
+               .append($('<ul class="dropdown-menu">'));
+
+      // add all the links for the top 5 magnet links
+      items.each(function(i, e) { 
+        var description = $(e).find('font.detDesc').text();
+        var sizeExtractionRegex = /.+Size (.+?),.+/i;
+        var size = sizeExtractionRegex.exec(description)[1];
+        var linkName = $(e).find('a.detLink').text();
+        var seeders = $(e).find('td[align="right"]').first().text();
+        var leechers = $(e).find('td[align="right"]').last().text();
+        var contextMenuTitle = linkName + '<br /> Size <b>' + size + '</b> Seeders: <b>' + seeders + '</b>' + '</b> Leechers: <b>' + leechers + '</b>';
+        // var magnetUrl = $(e).find('a[title="Download this torrent using magnet"]').attr('href');
+
+        // container.find('.dropdown-menu').append($('<li>').append($('<a>').attr('href', magnetUrl).append(contextMenuTitle)));
+        
+        var link = $(e).find('a[title="Download this torrent"]').attr('href');
+        
+        container.find('.dropdown-menu').append($('<li>').append($('<a>').attr('href', link).append(contextMenuTitle)));
+      });
+      
+      container.append('<a target="_blank" class="clickable" href="' + buildSearchUrl(sanitizeSearchTerm(searchTerm[0])) + '">search for more on TPB...</a>')
+    }
+    
+    return container;
+  }
+  
+  var openedTabs = [];
+  
+  function respondToMessage(theMessageEvent, event) {
+    // theMessageEvent.message == searchTerm
+
+    if(theMessageEvent.name === "lookForContent") {
+      //write into array all opened tabs
+      //if tab not exist make search
+      //otherwise nothing
+      
+      openedTabs.push(theMessageEvent.message[1]);
+      
+      // if($.inArray(theMessageEvent.message[1], openedTabs) == -1){
+        var searchUrl = buildSearchUrl(sanitizeSearchTerm(theMessageEvent.message[0]));
+        
+        $.get(searchUrl, function(data){
+          var resultTds = $(data).find('a[title="Download this torrent using magnet"]:lt(5)').closest('tr');
+          var resultList = buildDropdownList(resultTds, theMessageEvent.message);
+        
+          popover.addToList(resultList);
+          popover.badgeCount(toolbarItem);
+        });
+      // }
+    }else if(theMessageEvent.name === "removeFromPopup"){
+      //check how many entries there is in an array
+      //2 and more -> remove one by one, without changes in popup
+      //only one -> remove in popup
+
+      //check if there are other tab opened with same movie
+      // index = $.inArray(theMessageEvent.message, openedTabs);
+      var  count = {};
+      openedTabs.forEach(function(i) { count[i] = (count[i]||0)+1;  });
+      if(count[theMessageEvent.message] > 1){
+        openedTabs.splice($.inArray(theMessageEvent.message, openedTabs), 1);
+      }else{
+        popover.removeList(theMessageEvent.message);
+        popover.badgeCount(toolbarItem);
+      }
+    }
+  }
+
+  // safari.application.activeBrowserWindow.activeTab.addEventListener("message", respondToMessage, false);
+  // safari.application.activeBrowserWindow.addEventListener("message", respondToMessage, false);
+  safari.application.addEventListener("message", respondToMessage, false);
+  </script>
+</head>
+<body></body>
+<html>
