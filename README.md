@@ -18,3 +18,8 @@ FAQs:
 <li>Get notification on plugin button.
 <li>Check results in popover.
 </ol>
+
+<hr />
+Why you can't find us on safari extenstion gallery?
+
+<img src="https://github.com/lesyk/TpbImdbSearch/raw/master/apple_feedback.png" />
