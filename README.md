@@ -10,7 +10,7 @@ Plugin saves time for finding movie files. Open wanted movie on IMDB and we will
 * Open few tabs and find what is already pirated.
 
 <h3>Dowloads:</h3>
-<a href="https://github.com/lesyk/Searchless-IMDB/raw/master/safari/searchless-imdb.safariextz">Safari</a>
+<a href="https://github.com/lesyk/TpbImdbSearch/raw/master/Downloads/TpbImdbSearch.safariextz">Safari</a>
 
 <h3>FAQs:</h3>
 <ol>
