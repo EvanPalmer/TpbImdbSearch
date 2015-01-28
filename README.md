@@ -23,4 +23,4 @@ Plugin saves time for finding movie files. Open wanted movie on IMDB and we will
 <hr />
 Why you can't find us on safari extenstion gallery?
 
-<img src="https://github.com/lesyk/TpbImdbSearch/raw/master/apple_feedback.png" />
+<img src="https://github.com/lesyk/TpbImdbSearch/raw/master/images/apple_feedback.png" />
