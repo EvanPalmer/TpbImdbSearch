@@ -14,7 +14,7 @@
 
 	function buildSearchUrl(searchTerm)
 	{
-		var searchUrl = '//thepiratebay.cr/search/' + encodeURIComponent(searchTerm) + '/0/7/0';
+		var searchUrl = '//thepiratebay.org/search/' + encodeURIComponent(searchTerm) + '/0/7/0';
 		return searchUrl;
 	}
 

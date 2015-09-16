@@ -54,6 +54,34 @@
 				}
 			});
 		};
+
+		var thisIsRottenTomatoes = window.location.href.indexOf('//www.rottentomatoes.com/') > 0;
+		if(thisIsRottenTomatoes){
+				var thisIsAMoviePage = window.location.href.indexOf('/m/') > 0;
+				if(thisIsAMoviePage){
+					var container = $('<div class="col-sm-7 col-xs-9"></div>');
+					var tmpSearchTerm = $('#movie-title').clone();
+					$(tmpSearchTerm).find(".h3").remove();
+					var searchTerm = $(tmpSearchTerm).text();
+
+					$(container).insertBefore("#movie_videos");
+					container.css('clear', 'left');
+					container.tpbSearch({'searchTerm' : searchTerm });
+				}
+
+				var thisIsATVPage = window.location.href.indexOf('/tv/') > 0;
+				if(thisIsATVPage){
+					var container = $('<div class="col-sm-7 col-xs-9"></div>');
+					var tmpSearchTerm = $('#movie-title').clone();
+					$(tmpSearchTerm).find(".h3").remove();
+					var searchTerm = $(tmpSearchTerm).text();
+
+					$(container).insertBefore("#movie_videos");
+					container.css('clear', 'left');
+					container.tpbSearch({'searchTerm' : searchTerm });
+				}
+			//});
+		};
 	};
 }(jQuery));
 
