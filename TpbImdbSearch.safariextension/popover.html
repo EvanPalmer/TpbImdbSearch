@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="jquery-1.9.1.min.js"></script>
+  <script>
+  $(document).on("click", ".clickable", function(){
+    safari.application.activeBrowserWindow.openTab().url = $(this).attr("href");
+    safari.extension.popovers[0].hide();
+  });
+  
+  function addToList(data){
+    if($("#"+$(data).attr("id")).length != 0){
+      $("#"+$(data).attr("id")).remove();
+    }
+  
+    $("#container").append(data);
+  }
+  
+  function removeList(id){
+    $("#extSeARCHresults_"+id).remove();
+  }
+  
+  function badgeCount(toolbarItem){
+    resultsNum = $("#container > div.results").length
+    resultsNum > 0 ? $("#tutorial").hide() : $("#tutorial").show();
+    toolbarItem.badge = resultsNum;
+  }
+  </script>
+  
+  <style type="text/css">
+      body {
+        color: #333;
+        font-family: tahoma;
+        font-size: 14px;
+        background: #F7F7F7;
+      }
+ 
+/*      #container {
+        outline: 1px solid #AAA;
+        padding: 4px;
+        background: #FFF;
+        height: 100%;
+        overflow-y: auto;
+       }*/
+        
+        a {
+          text-decoration: none;
+          color: #136cb2;
+        }
+        
+        a:hover{
+          text-decoration: underline;
+          color: #0099CC;
+        }
+
+        ul.dropdown-menu{
+          padding-left: 20px;
+          margin-top: 6px;
+          margin-bottom: 6px;
+        }
+        
+        ul.dropdown-menu li {
+            margin-bottom: 5px;
+        }
+        
+        h3 {
+          padding-bottom: 0px;
+          margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+  <div id="container">
+    <div id="tutorial">
+      <p><b>'TpbImdbSearch'</b> plugin helps you to search less for movies.</p>
+      <div style="display:none">Simply go to <a href="http://www.imdb.com" class="clickable">IMDB</a> open movie page and we will search for 5 most recent entries in <a href="http://thepiratebay.cr" class="clickable">TPB</a> and give you magnet links for them.</div>
+      <div>1. Go to <a href="http://www.imdb.com" class="clickable">IMDB</a></div>
+      <div>2. Open movie page</div>
+      <div>3. Get notification: <img src="./images/notification.png" style="vertical-align: middle;" /></div>
+      <div>4. Check results: <img src="./images/results.png" /></div>
+    </div>
+  </div>
+</body>
+<html>
